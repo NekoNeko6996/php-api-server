@@ -1,0 +1,8 @@
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteRule ^public/api/([a-zA-Z0-9_-]+)$ public/apiRouter.php?route=$1 [L,QSA]
+RewriteRule ^public/views/([a-zA-Z0-9_-]+)$ public/viewRouter.php?route=$1 [L,QSA]  
+RewriteRule ^public/$ public/views/home.php?route=$1 [L,QSA]  
+RewriteRule ^$ public/views/home.php?route=$1 [L,QSA]  
