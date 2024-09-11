@@ -1,2 +1,2 @@
-# USE THIS PROJECT
- - run [composer install] to dowload vendor.
+### USE THIS PROJECT
+> - run <strong>composer install</strong> to dowload vendor.
