@@ -1,2 +1,3 @@
 ### USE THIS PROJECT
-> - run <strong>composer install</strong> to dowload vendor.
+
+> - run <strong>composer install</strong> to download vendor.
