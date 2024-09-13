@@ -8,19 +8,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($data) {
       $content = $data["content"];
       $tag = $data["tag"];
-      $type = $data["type"];
+      $type = $data["priority"];
       $icon = $data["icon"];
+      $day = $data["day"];
       $isDone = $data["isDone"];
+
 
       $userID = $jwtData["data"]->data->id;
       // check fields //
 
 
       //////////////////
-      saveNote($content, json_encode($tag), $type, $icon, $isDone, $userID);
+      saveNote($content, json_encode($tag), $type, $icon, $isDone, $userID, $day);
       echo json_encode([
         'status' => 'success',
-        'message' => $data["tag"],
+        'message' => "",
       ]);
     } else {
       echo json_encode([
@@ -31,12 +33,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 }
 
-function saveNote($content, $tag, $type, $icon, $isDone, $userID)
+function saveNote($content, $tag, $priority, $icon, $isDone, $userID, $day)
 {
   $conn = Database::getInstance()->getConnection();
-  $sql = "INSERT INTO notes (userID, content, type, tag, icon, isDone) VALUES (?, ?, ?, ?, ?, ?)";
+  $sql = "INSERT INTO notes (userID, content, priority, tag, icon, day, isDone) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
   $stmt = $conn->prepare($sql);
-  $stmt->bind_param("sssssi", $userID, $content, $type, $tag, $icon, $isDone);
+  $stmt->bind_param("ssssssi", $userID, $content, $priority, $tag, $icon, $day, $isDone);
   $stmt->execute();
 }

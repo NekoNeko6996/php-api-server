@@ -7,7 +7,7 @@ if ($conn->connect_error) {
 
 function loadUserData($conn)
 {
-    $sql = "SELECT fullName, birthDate, gender, address FROM user_information";
+    $sql = "SELECT * FROM user_information INNER JOIN users ON user_information.id = users.id";
     $stmt = $conn->prepare($sql);
     // $stmt->bind_param("s", $jwtData->data->id);
     $stmt->execute();
@@ -21,7 +21,7 @@ function loadUserData($conn)
         return;
     }
 
-    return $result->fetch_assoc();
+    return $result->fetch_all();
 }
 
 echo json_encode(loadUserData($conn));

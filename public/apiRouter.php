@@ -1,9 +1,9 @@
 <?php
-use \Dotenv\Dotenv;
-header('Content-Type: application/json; charset=utf-8');
-
 require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . '/../database/Connect.php';
+
+use \Dotenv\Dotenv;
+header('Content-Type: application/json; charset=utf-8');
 
 
 // Load .env
