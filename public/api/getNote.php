@@ -5,7 +5,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
   $userID = $jwtData["data"]->data->id;
 
   $conn = Database::getInstance()->getConnection();
-  $sql = "SELECT id, content, priority, tag, icon, isDone FROM notes WHERE userID = ?";
+  $sql = "SELECT id, content, priority, tag, icon, day, isDone FROM notes WHERE userID = ? ORDER BY createAt DESC";
 
   $stmt = $conn->prepare($sql);
   $stmt->bind_param("s", $userID);
@@ -24,4 +24,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     'notes' => $notes,
   ]);
 }
-

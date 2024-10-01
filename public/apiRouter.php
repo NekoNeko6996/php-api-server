@@ -19,7 +19,7 @@ $secretKey = $_ENV['JWT_SECRET_KEY'];
 $requestedRoute = $_GET['route'] ?? 'get';
 
 // route list
-$apiNoCheckedAllowedRoutes = ["signup", "login", "get"];
+$apiNoCheckedAllowedRoutes = ["signup", "login", "get", "getPowerOutageSchedule"];
 $apiCheckedAllowedRoutes = ['saveNote', 'getNote'];
 
 if ($requestedRoute == "checkToken") {
@@ -51,8 +51,10 @@ if ($requestedRoute == "checkToken") {
   if (file_exists($filePath)) {
     include $filePath;
   } else {
+    http_response_code(404);
     echo "Error: File not found!";
   }
 } else {
+  http_response_code(404);
   echo "Error: Invalid route!";
 }
