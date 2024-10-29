@@ -19,7 +19,7 @@ $secretKey = $_ENV['JWT_SECRET_KEY'];
 $requestedRoute = $_GET['route'] ?? 'get';
 
 // route list
-$apiNoCheckedAllowedRoutes = ["signup", "login", "get", "getPowerOutageSchedule"];
+$apiNoCheckedAllowedRoutes = ["signup", "login", "get", "getPowerOutageSchedule", "getPowerOutageScheduleRegionList", "getVerificationCode"];
 $apiCheckedAllowedRoutes = ['saveNote', 'getNote'];
 
 if ($requestedRoute == "checkToken") {

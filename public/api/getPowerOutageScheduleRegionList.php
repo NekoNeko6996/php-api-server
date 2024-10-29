@@ -3,30 +3,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $json = file_get_contents('php://input');
   $data = json_decode($json, true);
 
-  $unitCode = $data["unit_code"];
-  $start_date = $data["start_date"];
-  $end_date = $data["end_date"];
+  $province_code = $data["province_code"];
 
-  if (!isset($unitCode)) {
+  if (!isset($province_code)) {
     http_response_code(400);
     echo json_encode(["status" => "error", "message" => "Missing unit_code"]);
   }
 
-  fetchData($unitCode, $start_date, $end_date);
+  fetchData($province_code);
 } else {
   http_response_code(405);
   echo json_encode(["status" => "error", "message" => "Method not allowed"]);
 }
 
-function fetchData($unitCode, $start_date, $end_date)
+function fetchData($province_code)
 {
-  $url = "https://www.cskh.evnspc.vn/TraCuu/GetThongTinLichNgungGiamMaKhachHang";
+  $url = "https://www.cskh.evnspc.vn/LienHe/getDienLucList";
 
   $postData = [
-    'madvi' => $unitCode,
-    'tuNgay' => $start_date,
-    'denNgay' => $end_date,
-    'ChucNang' => 'MaDonVi'
+    "pMA_DVICTREN" => $province_code,
   ];
 
   $ch = curl_init();
@@ -45,20 +40,13 @@ function fetchData($unitCode, $start_date, $end_date)
 
   $data = [];
 
-  preg_match_all('/<tr>(.*?)<\/tr>/s', $response, $rows);
+  preg_match_all('/<option value="(.*?)">(.*?)<\/option>/', $response, $matches, PREG_SET_ORDER);
 
-  foreach ($rows[1] as $row) {
-    preg_match_all('/<td>(.*?)<\/td>/s', $row, $cells);
-
-    if (count($cells[1]) === 4) {
-      $data[] = [
-        'start' => explode(" ", trim(strip_tags($cells[1][0])))[0],
-        'start_time' => trim(strip_tags($cells[1][0])),
-        'end_time' => trim(strip_tags($cells[1][1])),
-        'address' => html_entity_decode(trim(strip_tags($cells[1][2]))),
-        'reason' => html_entity_decode(trim(strip_tags($cells[1][3]))),
-      ];
-    }
+  foreach ($matches as $match) {
+    $data[] = [
+      'region_key' => $match[1],
+      'region_name' => html_entity_decode($match[2])
+    ];
   }
 
   header('Content-Type: application/json; charset=utf-8');
